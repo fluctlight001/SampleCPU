@@ -17,6 +17,9 @@ module MEM(
         if (rst) begin
             ex_to_mem_bus_r <= `EX_TO_MEM_WD'b0;
         end
+        // else if (flush) begin
+        //     ex_to_mem_bus_r <= `EX_TO_MEM_WD'b0;
+        // end
         else if (stall[3]==`Stop && stall[4]==`NoStop) begin
             ex_to_mem_bus_r <= `EX_TO_MEM_WD'b0;
         end
@@ -33,15 +36,30 @@ module MEM(
     wire [4:0] rf_waddr;
     wire [31:0] rf_wdata;
     wire [31:0] ex_result;
+    wire [31:0] mem_result;
+
+    assign {
+        mem_pc,         // 75:44
+        data_ram_en,    // 43
+        data_ram_wen,   // 42:39
+        sel_rf_res,     // 38
+        rf_we,          // 37
+        rf_waddr,       // 36:32
+        ex_result       // 31:0
+    } =  ex_to_mem_bus_r;
+
+
+
+    assign rf_wdata = sel_rf_res ? mem_result : ex_result;
 
     assign mem_to_wb_bus = {
-        mem_pc,
-        rf_we,
-        rf_waddr,
-        rf_wdata
+        mem_pc,     // 41:38
+        rf_we,      // 37
+        rf_waddr,   // 36:32
+        rf_wdata    // 31:0
     };
 
-    
+
 
 
 endmodule

@@ -28,6 +28,7 @@ module mycpu_core(
     wire [`BR_WD-1:0] br_bus; 
     wire [`DATA_SRAM_WD-1:0] ex_dt_sram_bus;
     wire [`WB_TO_RF_WD-1:0] wb_to_rf_bus;
+    wire [`StallBus] stall;
 
     IF u_IF(
     	.clk             (clk             ),
@@ -53,7 +54,42 @@ module mycpu_core(
         .id_to_ex_bus    (id_to_ex_bus    ),
         .br_bus          (br_bus          )
     );
+
+    EX u_EX(
+    	.clk             (clk             ),
+        .rst             (rst             ),
+        .stall           (stall           ),
+        .id_to_ex_bus    (id_to_ex_bus    ),
+        .ex_to_mem_bus   (ex_to_mem_bus   ),
+        .data_sram_en    (data_sram_en    ),
+        .data_sram_wen   (data_sram_wen   ),
+        .data_sram_addr  (data_sram_addr  ),
+        .data_sram_wdata (data_sram_wdata )
+    );
+
+    MEM u_MEM(
+    	.clk             (clk             ),
+        .rst             (rst             ),
+        .stall           (stall           ),
+        .ex_to_mem_bus   (ex_to_mem_bus   ),
+        .data_sram_rdata (data_sram_rdata ),
+        .mem_to_wb_bus   (mem_to_wb_bus   )
+    );
     
+    WB u_WB(
+    	.clk               (clk               ),
+        .rst               (rst               ),
+        .stall             (stall             ),
+        .mem_to_wb_bus     (mem_to_wb_bus     ),
+        .wb_to_rf_bus      (wb_to_rf_bus      ),
+        .debug_wb_pc       (debug_wb_pc       ),
+        .debug_wb_rf_wen   (debug_wb_rf_wen   ),
+        .debug_wb_rf_wnum  (debug_wb_rf_wnum  ),
+        .debug_wb_rf_wdata (debug_wb_rf_wdata )
+    );
+
+    
+      
     
 
     
