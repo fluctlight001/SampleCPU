@@ -2,7 +2,7 @@
 module IF(
     input wire clk,
     input wire rst,
-    input wire [`StallBus] stall,
+    input wire [`StallBus-1:0] stall,
 
     // input wire flush,
     // input wire [31:0] new_pc,

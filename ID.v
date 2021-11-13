@@ -3,7 +3,7 @@ module ID(
     input wire clk,
     input wire rst,
     // input wire flush,
-    input wire [`StallBus] stall,
+    input wire [`StallBus-1:0] stall,
     
     output wire stallreq,
 

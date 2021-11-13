@@ -3,7 +3,7 @@ module WB(
     input wire clk,
     input wire rst,
     // input wire flush,
-    input wire [`StallBus] stall,
+    input wire [`StallBus-1:0] stall,
 
     input wire [`MEM_TO_WB_WD-1:0] mem_to_wb_bus,
 

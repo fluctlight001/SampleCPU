@@ -3,7 +3,7 @@ module EX(
     input wire clk,
     input wire rst,
     // input wire flush,
-    input wire [`StallBus] stall,
+    input wire [`StallBus-1:0] stall,
 
     input wire [`ID_TO_EX_WD-1:0] id_to_ex_bus,
 

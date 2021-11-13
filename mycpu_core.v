@@ -28,7 +28,7 @@ module mycpu_core(
     wire [`BR_WD-1:0] br_bus; 
     wire [`DATA_SRAM_WD-1:0] ex_dt_sram_bus;
     wire [`WB_TO_RF_WD-1:0] wb_to_rf_bus;
-    wire [`StallBus] stall;
+    wire [`StallBus-1:0] stall;
 
     IF u_IF(
     	.clk             (clk             ),
@@ -88,10 +88,9 @@ module mycpu_core(
         .debug_wb_rf_wdata (debug_wb_rf_wdata )
     );
 
-    
-      
-    
-
-    
+    CTRL u_CTRL(
+    	.rst   (rst   ),
+        .stall (stall )
+    );
     
 endmodule

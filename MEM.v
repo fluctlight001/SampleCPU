@@ -3,7 +3,7 @@ module MEM(
     input wire clk,
     input wire rst,
     // input wire flush,
-    input wire [`StallBus] stall,
+    input wire [`StallBus-1:0] stall,
 
     input wire [`EX_TO_MEM_WD-1:0] ex_to_mem_bus,
     input wire data_sram_rdata,
