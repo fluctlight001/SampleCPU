@@ -24,7 +24,7 @@ module mycpu_top(
 
     mycpu_core u_mycpu_core(
     	.clk               (clk               ),
-        .rst               (rst               ),
+        .rst               (~resetn           ),
         .int               (ext_int           ),
         .inst_sram_en      (inst_sram_en      ),
         .inst_sram_wen     (inst_sram_wen     ),

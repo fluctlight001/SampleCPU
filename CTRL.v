@@ -10,10 +10,10 @@ module CTRL(
 );  
     always @ (*) begin
         if (rst) begin
-            stall <= `StallBus'b0;
+            stall = `StallBus'b0;
         end
         else begin
-            stall <= `StallBus'b0;
+            stall = `StallBus'b0;
         end
     end
 
