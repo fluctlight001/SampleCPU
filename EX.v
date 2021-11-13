@@ -32,7 +32,7 @@ module EX(
         end
     end
 
-    wire [31:0] pc, inst;
+    wire [31:0] ex_pc, inst;
     wire [11:0] alu_op;
     wire [2:0] sel_alu_src1;
     wire [3:0] sel_alu_src2;
@@ -41,10 +41,11 @@ module EX(
     wire rf_we;
     wire [4:0] rf_waddr;
     wire sel_rf_res;
-    wire [31:0] rdata1, rdata2;
+    wire [31:0] rf_rdata1, rf_rdata2;
+    reg is_in_delayslot;
 
     assign {
-        pc,             // 148:117
+        ex_pc,          // 148:117
         inst,           // 116:85
         alu_op,         // 84:83
         sel_alu_src1,   // 82:80
@@ -54,9 +55,43 @@ module EX(
         rf_we,          // 70
         rf_waddr,       // 69:65
         sel_rf_res,     // 64
-        rdata1,         // 63:32
-        rdata2          // 31:0
+        rf_rdata1,         // 63:32
+        rf_rdata2          // 31:0
     } = id_to_ex_bus_r;
 
+    wire [31:0] imm_sign_extend, imm_zero_extend, sa_zero_extend;
+    assign imm_sign_extend = {{16{inst[15]}},inst[15:0]};
+    assign imm_zero_extend = {16'b0, inst[15:0]};
+    assign sa_zero_extend = {27'b0,inst[10:6]};
+
+    wire [31:0] alu_src1, alu_src2;
+    wire [31:0] alu_result, ex_result;
+
+    assign alu_src1 = sel_alu_src1[1] ? ex_pc :
+                      sel_alu_src1[2] ? sa_zero_extend : rf_rdata1;
+
+    assign alu_src2 = sel_alu_src2[1] ? imm_sign_extend :
+                      sel_alu_src2[2] ? 32'd8 :
+                      sel_alu_src2[3] ? imm_zero_extend : rf_rdata2;
+    
+    alu u_alu(
+    	.alu_control (alu_op ),
+        .alu_src1    (alu_src1    ),
+        .alu_src2    (alu_src2    ),
+        .alu_result  (alu_result  )
+    );
+
+    assign ex_result = alu_result;
+
+    assign ex_to_mem_bus = {
+        ex_pc,          // 75:44
+        data_ram_en,    // 43
+        data_ram_wen,   // 42:39
+        sel_rf_res,     // 38
+        rf_we,          // 37
+        rf_waddr,       // 36:32
+        ex_result       // 31:0
+    };
+    
     
 endmodule
