@@ -25,8 +25,7 @@
 6. 点击播放进行仿真，如果停止可在vivado下方的控制台看到提示信息，这是龙芯实验平台提供的比对机制会告诉你当前在哪条
        指令出现错误。
 
-7. 运行的汇编指令可在 nscscc2021_group_v0.01\func_test_v0.01\soft\memory_game\obj\test.s 该文件中查找，直接
-       搜索PC值即可。
+7. 运行的汇编指令可在 ~~nscscc2021_group_v0.01\func_test_v0.01\soft\memory_game\obj\test.s~~ D:\nscscc2020_group_v0.01\func_test_v0.01\soft\func\obj\test.s 该文件中查找，直接搜索PC值即可。（不好意思之前写错了）
 
 8. 指令集文件可在doc文件夹的A03文件中查看。
 
