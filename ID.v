@@ -189,7 +189,7 @@ module ID(
 
 
 
-    // regfile sotre enable
+    // regfile store enable
     assign rf_we = inst_ori | inst_lui | inst_addiu;
 
 
